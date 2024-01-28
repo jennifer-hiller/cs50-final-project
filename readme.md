@@ -7,6 +7,7 @@ Some of the simplest functionality from Twitter are duplicated here. Users can:
 * Tweet
 * See tweets
 * Like/Unlike tweets
+* Delete tweets
 
 This project takes some aspects of the Finance project since I liked how it stored passwords, had an "apology" page for when things went wrong, and used sessions. It utilizes Bootstrap since Finance did as well, as well as Bootstrap being actually a Twitter invention.
 
@@ -31,3 +32,5 @@ like ("/like") adds or deletes records from the "likes" table and returns either
 delete ("/delete") deletes a record from the "tweets" table and returns either a success message, in which the javascript will remove the tweet, or an error message, which is handled by a javascript alert();
 
 All of the HTML forms use client-side validation, in addition to the server side validation.
+
+You may notice that I'm "deferring" the script tag. This is something I learned can bypass the problem of the dom being entirely loaded and listening for that event. In essence, this does the same thing.
