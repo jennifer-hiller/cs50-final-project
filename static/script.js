@@ -1,6 +1,5 @@
 document.querySelectorAll(".like-this").forEach(button => {
     button.addEventListener("click", async () => {
-        console.log(button.dataset.action);
         const response = await fetch("/like", {
             method: "POST",
             headers: {
@@ -30,5 +29,24 @@ document.querySelectorAll(".like-this").forEach(button => {
 document.querySelectorAll(".logged-out").forEach(button => {
     button.addEventListener("click", () => {
         alert("You must be logged in to do that");
+    });
+});
+document.querySelectorAll(".delete-tweet").forEach(button => {
+    button.addEventListener("click", async () => {
+        const response = await fetch("/delete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                tweet: button.dataset.tweetId,
+            })
+        });
+        const data = await response.json();
+        if (data.status === "success") {
+            button.closest(".card").remove();
+        } else {
+            alert("There has been an error deleting your tweet");
+        }
     });
 });

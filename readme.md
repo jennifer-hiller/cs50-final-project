@@ -26,8 +26,8 @@ register, login, and logout do exactly that.
 
 tweet ("/tweet") handles the form submission from the index page and inserts into the "tweets" database. It only enters the user id and the tweet contents, as the database handles the date and time on time of insertion.
 
-like ("/like") adds or deletes records from the "likes" database and returns either a success message and the new number of likes, or an error message, which is handled as a javascript alert().
+like ("/like") adds or deletes records from the "likes" table and returns either a success message and the new number of likes, or an error message, which is handled as a javascript alert().
+
+delete ("/delete") deletes a record from the "tweets" table and returns either a success message, in which the javascript will remove the tweet, or an error message, which is handled by a javascript alert();
 
 All of the HTML forms use client-side validation, in addition to the server side validation.
-
-In the future, I would like this app to be able to delete tweets and have a user page which shows all of that user's tweets. It should be able to do something Twitter has never done, which is allow users to edit their own tweets.

@@ -13,24 +13,27 @@
             <div class="card-footer">
                 <h5>{{ tweet.friendlydate }}</h5>
                 <div class="like-container">
-                {% if session %}
-                    {% if tweet.userlikes %}
-                        <button type="button" class="btn like-this" data-tweet-id="{{ tweet.id }}" data-action="dislike">
-                            <img src="/static/heart_filled.svg" class="like" />
-                            <span class="tweet-likes">{{ tweet.likes[0].likes }}</span>
-                        </button>
+                    {% if session %}
+                        {% if tweet.userlikes %}
+                            <button type="button" class="btn like-this" data-tweet-id="{{ tweet.id }}" data-action="dislike">
+                                <img src="/static/heart_filled.svg" class="like" />
+                                <span class="tweet-likes">{{ tweet.likes[0].likes }}</span>
+                            </button>
+                        {% else %}
+                            <button type="button" class="btn like-this" data-tweet-id="{{ tweet.id }}" data-action="like">
+                                <img src="/static/heart_empty.svg" class="like" />
+                                <span class="tweet-likes">{{ tweet.likes[0].likes }}</span>
+                            </button>
+                        {% endif %}
                     {% else %}
-                        <button type="button" class="btn like-this" data-tweet-id="{{ tweet.id }}" data-action="like">
+                        <button type="button" class="btn logged-out">
                             <img src="/static/heart_empty.svg" class="like" />
                             <span class="tweet-likes">{{ tweet.likes[0].likes }}</span>
                         </button>
                     {% endif %}
-                {% else %}
-                    <button type="button" class="btn logged-out">
-                        <img src="/static/heart_empty.svg" class="like" />
-                        <span class="tweet-likes">{{ tweet.likes[0].likes }}</span>
-                    </button>
-                {% endif %}
+                    {% if tweet.user_id == session["user_id"] %}
+                        <button type="button" class="btn btn-danger delete-tweet" data-tweet-id="{{ tweet.id }}">Delete</button>
+                    {% endif %}
                 </div>
             </div>
         </div>

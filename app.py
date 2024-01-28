@@ -50,9 +50,13 @@ def process_tweets(tweets):
 @app.route("/")
 def index():
     """Show all tweets"""
+    username = False
+    if (session):
+        username_call = db.execute("SELECT username FROM users WHERE id = ?", session["user_id"])
+        username = username_call[0]["username"]
     tweets = db.execute("SELECT *, username FROM tweets, users WHERE tweets.user_id = users.id ORDER BY date DESC")
     tweets = process_tweets(tweets)
-    return render_template("index.html", tweets=tweets)
+    return render_template("index.html", tweets=tweets, username=username)
 
 @app.route("/user")
 def user():
@@ -176,5 +180,20 @@ def like():
             db.execute("INSERT INTO likes (user_id, tweet_id) VALUES(?, ?)", session["user_id"], data.get("tweet"))
         likes = db.execute("SELECT count(*) as likes FROM likes WHERE tweet_id = ?", data.get("tweet"))
         return jsonify({"status": "success", "likes": likes[0]['likes']}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@app.route("/delete", methods=["POST"])
+@login_required
+def delete():
+    """Delete a tweet"""
+    try:
+        data = request.get_json()
+        if not data.get("tweet"):
+            return jsonify({"error": "You must provide a tweet"}), 400
+        db.execute("DELETE FROM likes WHERE tweet_id = ?", data.get("tweet"))
+        db.execute("DELETE FROM tweets WHERE id = ?", data.get("tweet"))
+        return jsonify({"status": "success"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
