@@ -38,17 +38,30 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-
-@app.route("/")
-def index():
-    """Show all tweets"""
-    tweets = db.execute("SELECT *, username FROM tweets, users WHERE tweets.user_id = users.id ORDER BY date DESC")
+def process_tweets(tweets):
+    """Process tweets for display"""
     for tweet in tweets:
         tweet["likes"] = db.execute("SELECT count(*) as likes FROM likes WHERE tweet_id = ?", tweet["id"])
         tweet["userlikes"] = db.execute("SELECT * FROM likes WHERE user_id = ? AND tweet_id = ?", session["user_id"], tweet["id"]) if session else False
         tweet_time = datetime.strptime(tweet["date"], "%Y-%m-%d %H:%M:%S")
         tweet["friendlydate"] = humanize.naturaltime(tweet_time - datetime.now())
+    return tweets
+
+@app.route("/")
+def index():
+    """Show all tweets"""
+    tweets = db.execute("SELECT *, username FROM tweets, users WHERE tweets.user_id = users.id ORDER BY date DESC")
+    tweets = process_tweets(tweets)
     return render_template("index.html", tweets=tweets)
+
+@app.route("/user")
+def user():
+    """Show user's tweets"""
+    username = db.execute("SELECT username FROM users WHERE id = ?", request.args.get('user'))
+    tweets = db.execute("SELECT *, username FROM tweets, users WHERE tweets.user_id = users.id AND tweets.user_id = ? ORDER BY date DESC", request.args.get('user'))
+    tweets = process_tweets(tweets)
+    return render_template("user.html", tweets=tweets, username=username[0]["username"])
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

@@ -1,24 +1,14 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Home
+    {{ username }}
 {% endblock %}
 
 {% block main %}
-    {% if session %}
-        <form action="/tweet" method="post" class="form">
-            <fieldset>
-                <legend>Tweet Something!</legend>
-                <p><textarea maxlength="255" name="contents" class="form-control" maxlength="255" required></textarea></p>
-                <p><button class="btn btn-primary">Tweet</button></p>
-            </fieldset>
-        </form>
-        <hr />
-    {% endif %}
-    <h1 class="text-center">All Tweets</h1>
+    <h1 class="text-center">{{ username }}'s Tweets</h1>
     {% for tweet in tweets %}
         <div class="card">
-            <h3 class="card-header"><a href="/user?user={{ tweet.user_id }}">{{ tweet.username }}</a></h3>
+            <h3 class="card-header">{{ tweet.username }}</h3>
             <p class="card-body">{{ tweet.contents }}</p>
             <div class="card-footer">
                 <h5>{{ tweet.friendlydate }}</h5>
