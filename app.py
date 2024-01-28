@@ -54,7 +54,7 @@ def index():
     if (session):
         username_call = db.execute("SELECT username FROM users WHERE id = ?", session["user_id"])
         username = username_call[0]["username"]
-    tweets = db.execute("SELECT *, username FROM tweets, users WHERE tweets.user_id = users.id ORDER BY date DESC")
+    tweets = db.execute("SELECT tweets.id, date, contents, user_id, users.username FROM tweets, users WHERE tweets.user_id = users.id ORDER BY date DESC")
     tweets = process_tweets(tweets)
     return render_template("index.html", tweets=tweets, username=username)
 
@@ -62,7 +62,7 @@ def index():
 def user():
     """Show user's tweets"""
     username = db.execute("SELECT username FROM users WHERE id = ?", request.args.get('user'))
-    tweets = db.execute("SELECT *, username FROM tweets, users WHERE tweets.user_id = users.id AND tweets.user_id = ? ORDER BY date DESC", request.args.get('user'))
+    tweets = db.execute("SELECT tweets.id, date, contents, user_id, users.username, users.id, username FROM tweets, users WHERE tweets.user_id = users.id AND tweets.user_id = ? ORDER BY date DESC", request.args.get('user'))
     tweets = process_tweets(tweets)
     return render_template("user.html", tweets=tweets, username=username[0]["username"])
 

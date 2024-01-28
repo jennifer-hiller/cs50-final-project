@@ -1,5 +1,5 @@
 # TWITTER CLONE
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/kQ01TUutZ58
 #### Description:
 Some of the simplest functionality from Twitter are duplicated here. Users can:
 * Register
