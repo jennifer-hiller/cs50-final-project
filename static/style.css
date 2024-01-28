@@ -1,0 +1,20 @@
+.like {
+    height: 18.75px;
+    width: 18.75px;
+    fill: red;
+}
+.card {
+    margin-bottom: 2rem;
+}
+.card-footer {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.card-footer h5 {
+    font-size: .85rem;
+    margin: 0;
+}
+.card-body {
+    margin: 0;
+}
