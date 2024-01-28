@@ -29,7 +29,7 @@ tweet ("/tweet") handles the form submission from the index page and inserts int
 
 like ("/like") adds or deletes records from the "likes" table and returns either a success message and the new number of likes, or an error message, which is handled as a javascript alert().
 
-delete ("/delete") deletes a record from the "tweets" table and returns either a success message, in which the javascript will remove the tweet, or an error message, which is handled by a javascript alert();
+delete ("/delete") deletes a record from the "tweets" table and returns either a success message, in which the javascript will remove the tweet, or an error message, which is handled by a javascript alert(). One thing I found was that it violated a foreign key constraint, which is something I have encountered in my professional life. To get around it, I had to delete all records from the "likes" table that reference the tweet_id.
 
 All of the HTML forms use client-side validation, in addition to the server side validation.
 
